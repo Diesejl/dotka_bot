@@ -82,7 +82,6 @@ async def callback_worker(call):
 async def send_to_admin():
     await bot.send_message(chat_id=ADMIN_ID, text="Бот запущен")
 
-
 def keyboard():
     """Основная клавиатура внизу"""
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)

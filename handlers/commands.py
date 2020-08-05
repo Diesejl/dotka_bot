@@ -1,8 +1,18 @@
 # -*- coding: utf-8 -*-
 from aiogram import types
-from dotka_bot.misc import dispatcher, bot
+from misc import dispatcher, bot
+from config import ADMIN_ID
 import random
-from dotka_bot.media_shit import dotaheroes
+from media_shit import dotaheroes
+
+
+async def send_to_admin_start(dispatcher):
+    await bot.send_message(chat_id=ADMIN_ID, text="Bot is working")
+
+
+async def send_to_admin_stop(dispatcher):
+    await bot.send_message(chat_id=ADMIN_ID, text="Bot stop")
+
 
 # Ответ пользователя на кнопку /start
 @dispatcher.message_handler(commands=['start'])
@@ -18,6 +28,7 @@ async def send_help(message: types.Message):
     """ `/about` """
     text = "Если на меня не забьют, то позднее добавится функционал связанный с Dota 2"
     await bot.send_message(message.chat.id, text)
+
 
 # Ответ пользователя на кнопку /game
 @dispatcher.message_handler(commands=['game'])

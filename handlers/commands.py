@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from aiogram import types
-from aiogram.types import ContentType
-from config import *
-from misc import dispatcher, bot
+from dotka_bot.misc import dispatcher, bot
 import random
-from media_shit import dotaheroes
+from dotka_bot.media_shit import dotaheroes
 
-
+# Ответ пользователя на кнопку /start
 @dispatcher.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
     """ `/start` """
@@ -14,52 +12,14 @@ async def send_welcome(message: types.Message):
     await bot.send_message(message.chat.id, text, reply_markup=keyboard())
 
 
-@dispatcher.message_handler(commands=['help'])
-async def send_help(message: types.Message):
-    """ `/help` """
-    text = f"{message.from_user.full_name}, ты серьезно, какая нах помощь?" \
-           f" Мне бы кто помог этого бота написать..."
-    await bot.send_message(message.chat.id, text)
-
-
+# Ответ пользователя на кнопку /about
 @dispatcher.message_handler(commands=['about'])
 async def send_help(message: types.Message):
     """ `/about` """
     text = "Если на меня не забьют, то позднее добавится функционал связанный с Dota 2"
     await bot.send_message(message.chat.id, text)
 
-
-@dispatcher.message_handler(content_types=ContentType.PHOTO)
-async def send_text_for_pic(message: types.Message):
-    text = "О, это же пикча! Не вкуриваю че там, но ок"
-    await bot.send_message(message.chat.id, text)
-
-
-@dispatcher.message_handler(lambda message: message.text and 'шпак' in message.text.lower())
-async def send_text_handler(message: types.Message):
-    text = "шпак? шпак пес сутулый"
-    await bot.send_message(message.chat.id, text)
-
-
-@dispatcher.message_handler(lambda message: message.text and 'kek' in message.text.lower())
-async def send_kek_command(message: types.message):
-    text = "kek"
-    await bot.send_message(message.chat.id, text)
-
-
-@dispatcher.message_handler(commands=['reg'])
-async def check_user_name(message: types.Message):
-    text = "Тебя зовут " + message.from_user.full_name + "?"
-    await bot.send_message(message.chat.id, text, reply_markup=yn_keyboard())
-
-
-# @dispatcher.callback_query_handler()
-# async def callback_worker(call):
-#     if call.data == "yes":
-#         await bot.send_message(call.message.chat.id, 'Окай пёс!'  );
-#     elif call.data == "no":
-#         await bot.send_message(call.message.chat.id, 'Ну ладно, значит буду звать тебя мешок с костями');
-
+# Ответ пользователя на кнопку /game
 @dispatcher.message_handler(commands=['game'])
 async def ask_game(message: types.Message):
     text = message.from_user.full_name + ", Какой перс изображен на пикче?"
@@ -79,55 +39,60 @@ async def callback_worker(call):
     await bot.send_message(call.message.chat.id, 'Не верно!')
 
 
-async def send_to_admin():
-    await bot.send_message(chat_id=ADMIN_ID, text="Бот запущен")
-
 def keyboard():
     """Основная клавиатура внизу"""
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = types.KeyboardButton('/help')
-    btn2 = types.KeyboardButton('/about')
-    btn3 = types.KeyboardButton('/reg')
-    btn4 = types.KeyboardButton('/game')
-    markup.add(btn1, btn2, btn3, btn4)
+    btn1 = types.KeyboardButton('about')
+    btn2 = types.KeyboardButton('game')
+    markup.add(btn1, btn2)
     return markup
 
 
-def yn_keyboard():
-    """Клавиатура ДА, НЕТ"""
-    keyboard = types.InlineKeyboardMarkup()
-    key_yes = types.InlineKeyboardButton(text='Да', callback_data='yes')
-    key_no = types.InlineKeyboardButton(text='Нет', callback_data='no')
-    keyboard.add(key_yes, key_no)
-    return keyboard
+# # Хэндлер на команду /start
+# @dispatcher.message_handler(commands=["start"])
+# async def cmd_start(message: types.Message):
+#     poll_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+#     poll_keyboard.add(types.KeyboardButton(text="Создать викторину",
+#                                            request_poll=types.KeyboardButtonPollType(type=types.PollType.QUIZ)))
+#     poll_keyboard.add(types.KeyboardButton(text="Отмена"))
+#     await message.answer("Нажмите на кнопку ниже и создайте викторину!", reply_markup=poll_keyboard)
+
+# Хэндлер на текстовое сообщение с текстом “Отмена”
+# @dispatcher.message_handler(lambda message: message.text == "Отмена")
+# async def action_cancel(message: types.Message):
+#     remove_keyboard = types.ReplyKeyboardRemove()
+#     await message.answer("Действие отменено. Введите /start, чтобы начать заново.", reply_markup=remove_keyboard)
+
+def random_hero():
+    """Метод для выбора героев наугад"""
+    hero_choice = random.choice(list(dotaheroes.HEROES.keys()))
+    return hero_choice
 
 
-# def random_hero():
-#     """Метод для выбора героев наугад"""
-#     heroChoiсe = random.choice(list(dotaheroes.HEROES.keys()))
-#     return heroChoiсe
-
-
-def answer_keyboard(chosenHero):
+def answer_keyboard(chosen_hero):
     """Клавиатура выбора ответа"""
     call1, call2, call3, call4 = "False", "False", "False", "False"
-    heroList = [chosenHero]
-    while len(heroList) != 4:
-        heroKek = random.choice(list(dotaheroes.HEROES.keys()))
-        if heroKek not in heroList:
-            heroList.append(heroKek)
-        print(heroKek)
-    heroList.sort()
-    if heroList[0] == chosenHero: call1 = "True"
-    if heroList[1] == chosenHero: call2 = "True"
-    if heroList[2] == chosenHero: call3 = "True"
-    if heroList[3] == chosenHero: call4 = "True"
-    print(heroList)
+    hero_list = [chosen_hero]
+    while len(hero_list) != 4:
+        hero_kek = random.choice(list(dotaheroes.HEROES.keys()))
+        if hero_kek not in hero_list:
+            hero_list.append(hero_kek)
+        print(hero_kek)
+    hero_list.sort()
+    if hero_list[0] == chosen_hero:
+        call1 = "True"
+    if hero_list[1] == chosen_hero:
+        call2 = "True"
+    if hero_list[2] == chosen_hero:
+        call3 = "True"
+    if hero_list[3] == chosen_hero:
+        call4 = "True"
+    print(hero_list)
     print(call1, call2, call3, call4)
-    btn1 = types.InlineKeyboardButton(heroList[0], callback_data=call1)
-    btn2 = types.InlineKeyboardButton(heroList[1], callback_data=call2)
-    btn3 = types.InlineKeyboardButton(heroList[2], callback_data=call3)
-    btn4 = types.InlineKeyboardButton(heroList[3], callback_data=call4)
+    btn1 = types.InlineKeyboardButton(hero_list[0], callback_data=call1)
+    btn2 = types.InlineKeyboardButton(hero_list[1], callback_data=call2)
+    btn3 = types.InlineKeyboardButton(hero_list[2], callback_data=call3)
+    btn4 = types.InlineKeyboardButton(hero_list[3], callback_data=call4)
     btn5 = types.InlineKeyboardButton("Exit this shitty game", callback_data='/start')
-    keyboard = types.InlineKeyboardMarkup().add(btn1, btn2, btn3, btn4, btn5)
-    return keyboard
+    game_keyboard = types.InlineKeyboardMarkup().add(btn1, btn2, btn3, btn4, btn5)
+    return game_keyboard

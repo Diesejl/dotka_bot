@@ -1,5 +1,5 @@
 import logging
-import config
+from dotka_bot import config
 from aiogram import Bot, Dispatcher
 
 logging.basicConfig(level=logging.INFO)

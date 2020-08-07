@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 from aiogram import types
+from aiogram.dispatcher.filters import Command
 from misc import dispatcher, bot
 import random
 from data import dotaheroes
+from keyboards.default import menu
+
+
+@dispatcher.message_handler((Command("menu")))
+async def show_menu(message: types.Message):
+    await message.answer("Меню", reply_markup=menu)
 
 
 # Ответ пользователя на кнопку /game
@@ -24,14 +31,6 @@ async def callback_worker(call):
 async def callback_worker(call):
     await bot.send_message(call.message.chat.id, 'Не верно!')
 
-
-def keyboard():
-    """Основная клавиатура внизу"""
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = types.KeyboardButton(text='/help')
-    btn2 = types.KeyboardButton(text='/game')
-    markup.add(btn1, btn2)
-    return markup
 
 
 # # Хэндлер на команду /start

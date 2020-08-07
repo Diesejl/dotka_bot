@@ -12,10 +12,6 @@ RUN pip install setuptools pip --upgrade && \
 
 WORKDIR /opt/dotka_bot
 
-COPY handlers/ handlers/
-COPY media_shit/ media_shit/
-COPY bot.py ./
-COPY config.py ./
-COPY misc.py ./
+COPY . .
 
 CMD [ "python", "bot.py" ]

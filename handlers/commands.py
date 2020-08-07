@@ -1,33 +1,8 @@
 # -*- coding: utf-8 -*-
 from aiogram import types
 from misc import dispatcher, bot
-from config import ADMIN_ID
 import random
-from media_shit import dotaheroes
-
-
-async def send_to_admin_start(dispatcher):
-    await bot.send_message(chat_id=ADMIN_ID, text="Bot is working")
-
-
-async def send_to_admin_stop(dispatcher):
-    await bot.send_message(chat_id=ADMIN_ID, text="Bot stop")
-
-
-# Ответ пользователя на кнопку /start
-@dispatcher.message_handler(commands=['start'])
-async def send_welcome(message: types.Message):
-    """ `/start` """
-    text = f"Привет, {message.from_user.full_name}! Я бот и меня еще пилят, пока я ничего не умею"
-    await bot.send_message(message.chat.id, text, reply_markup=keyboard())
-
-
-# Ответ пользователя на кнопку /about
-@dispatcher.message_handler(commands=['about'])
-async def send_help(message: types.Message):
-    """ `/about` """
-    text = "Если на меня не забьют, то позднее добавится функционал связанный с Dota 2"
-    await bot.send_message(message.chat.id, text)
+from data import dotaheroes
 
 
 # Ответ пользователя на кнопку /game
@@ -53,8 +28,8 @@ async def callback_worker(call):
 def keyboard():
     """Основная клавиатура внизу"""
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = types.KeyboardButton('about')
-    btn2 = types.KeyboardButton('game')
+    btn1 = types.KeyboardButton(text='/help')
+    btn2 = types.KeyboardButton(text='/game')
     markup.add(btn1, btn2)
     return markup
 

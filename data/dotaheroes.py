@@ -47,7 +47,7 @@ HEROES = {
     "Leshrac": "https://gamepedia.cursecdn.com/dota2_gamepedia/2/26/Leshrac_icon.png",
     "Lich": "https://gamepedia.cursecdn.com/dota2_gamepedia/b/bb/Lich_icon.png",
     "Lifestealer": "https://gamepedia.cursecdn.com/dota2_gamepedia/2/2b/Lifestealer_icon.png",
-    "Lina": "https://gamepedia.cursecdn.com/dota2_gamepedia/3/35/Lina_icon.png" ,
+    "Lina": "https://gamepedia.cursecdn.com/dota2_gamepedia/3/35/Lina_icon.png",
     "Lion": "https://gamepedia.cursecdn.com/dota2_gamepedia/b/b8/Lion_icon.png",
     "Lone Druid": "https://gamepedia.cursecdn.com/dota2_gamepedia/5/5d/Lone_Druid_icon.png",
     "Luna": "https://gamepedia.cursecdn.com/dota2_gamepedia/7/7d/Luna_icon.png",
@@ -117,4 +117,3 @@ HEROES = {
     "Wraith King": "https://gamepedia.cursecdn.com/dota2_gamepedia/1/1e/Wraith_King_icon.png",
     "Zeus": "https://gamepedia.cursecdn.com/dota2_gamepedia/3/3f/Zeus_icon.png"
 }
-

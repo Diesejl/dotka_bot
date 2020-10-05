@@ -1,10 +1,14 @@
-from misc import dispatcher, bot
-from config import ADMIN_ID
+import logging
+
+from aiogram import Dispatcher
+
+from data.config import admins
 
 
-async def send_to_admin_start(dispatcher):
-    await bot.send_message(chat_id=ADMIN_ID, text="Bot is working")
+async def on_startup_notify(dp: Dispatcher):
+    for admin in admins:
+        try:
+            await dp.bot.send_message(admin, "Бот Запущен")
 
-
-async def send_to_admin_stop(dispatcher):
-    await bot.send_message(chat_id=ADMIN_ID, text="bot stopped")
+        except Exception as err:
+            logging.exception(err)

@@ -1,5 +1,4 @@
-from .commands import dispatcher
-from .help import dispatcher
-from .start import dispatcher
+from .errors import dp
+from .users import dp
 
-__all__ = ["dispatcher"]
+__all__ = ["dp"]

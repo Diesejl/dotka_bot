@@ -1,17 +1,9 @@
-FROM python:3.8-alpine
+FROM python:3.7-slim
 
-LABEL Author=ilya
+WORKDIR /dotka_bot
 
-RUN apk add --no-cache gcc libc-dev unixodbc-dev libffi-dev
+COPY requirements.txt /dotka_bot/
+RUN pip install -r /dotka_bot/requirements.txt
+COPY . /dotka_bot/
 
-COPY requirements.txt /tmp/requirements.txt
-
-RUN pip install setuptools pip --upgrade && \
-    pip install --no-cache -r  /tmp/requirements.txt && \
-    rm /tmp/requirements.txt
-
-WORKDIR /opt/dotka_bot
-
-COPY . .
-
-CMD [ "python", "bot.py" ]
+CMD python3 /dotka_bot/app.py

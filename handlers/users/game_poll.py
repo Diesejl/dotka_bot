@@ -3,7 +3,7 @@ import random
 from data import dotaheroes
 from loader import dp, bot
 from keyboards.inline.keyboard import answer_keyboard
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message, ReplyKeyboardRemove, CallbackQuery
 
 
 @dp.message_handler(Command(['game']))
@@ -26,10 +26,10 @@ async def callback_worker(call):
 
 
 # Хэндлер на текстовое сообщение с текстом “Отмена”
-@dp.message_handler(lambda message: message.text == "Отмена")
-async def action_cancel(message: Message):
-    remove_keyboard = ReplyKeyboardRemove()
-    await message.answer("Действие отменено. Введите /start, чтобы начать заново.", reply_markup=remove_keyboard)
+@dp.callback_query_handler(text="cancel")
+async def action_cancel(call: CallbackQuery):
+    await call.answer("Действие отменено. Введите /start, чтобы начать заново.", show_alert=True)
+    await call.message.edit_reply_markup()
 
 
 def random_hero():
@@ -37,13 +37,4 @@ def random_hero():
     hero_choice = random.choice(list(dotaheroes.HEROES.keys()))
     return hero_choice
 
-
-# # Хэндлер на команду /start
-# @dp.message_handler(commands=["start"])
-# async def cmd_start(message: Message):
-#     poll_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-#     poll_keyboard.add(KeyboardButton(text="Создать викторину",
-#                                            request_poll=KeyboardButtonPollType(type=PollType.QUIZ)))
-#     poll_keyboard.add(KeyboardButton(text="Отмена"))
-#     await message.answer("Нажмите на кнопку ниже и создайте викторину!", reply_markup=poll_keyboard)
 

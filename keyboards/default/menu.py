@@ -7,7 +7,9 @@ menu = ReplyKeyboardMarkup(
             KeyboardButton(text="/start")
         ],
         [
-            KeyboardButton(text="/help")
+            KeyboardButton(text="/help"),
+            KeyboardButton(text="/game"),
+            KeyboardButton(text="/quiz")
         ]
     ], resize_keyboard=True
 )

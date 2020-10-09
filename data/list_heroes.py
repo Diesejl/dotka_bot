@@ -1,13 +1,13 @@
 from random import choice
-from data import dotaheroes
+from data.dotaheroes import HEROES
 
 
-def make_list_heroes(chosen_hero):
-    hero_list = [chosen_hero]
-    while len(hero_list) != 6:
-        hero_kek = choice(list(dotaheroes.HEROES.keys()))
-        if hero_kek not in hero_list:
-            hero_list.append(hero_kek)
-        print(hero_kek)
-    hero_list.sort()
-    return hero_list
+def make_list_of_heroes(hidden_hero):
+    list_of_heroes = [hidden_hero]
+    while len(list_of_heroes) != 6:
+        new_hero = choice(list(HEROES.keys()))
+        if new_hero not in list_of_heroes:
+            list_of_heroes.append(new_hero)
+
+    list_of_heroes.sort()
+    return list_of_heroes

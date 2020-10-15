@@ -6,10 +6,10 @@ menu = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="/start"),
             KeyboardButton(text="/help"),
-            KeyboardButton(text="/game"),
+            KeyboardButton(text="Dota 2 quiz"),
         ],
         [
-            KeyboardButton(text="/random_Meme")
+            KeyboardButton(text="Прислать рандомный мемчик")
         ]
-    ], resize_keyboard=True
+    ], resize_keyboard=True, one_time_keyboard=True
 )

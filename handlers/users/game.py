@@ -1,5 +1,5 @@
 from random import choice
-from aiogram.types import Message, PollAnswer, CallbackQuery
+from aiogram.types import Message, PollAnswer, CallbackQuery, Poll
 from data.dotaheroes import HEROES
 from data.list_heroes import make_list_of_heroes
 from keyboards.inline import keyboard_yn
@@ -19,7 +19,15 @@ async def process_callback_button1(callback_query: CallbackQuery):
     hidden_hero = choice(list(HEROES.keys()))
     list_of_heroes = make_list_of_heroes(hidden_hero)
     await bot.answer_callback_query(callback_query.id)
+    await bot.delete_message(chat_id=callback_query.message.chat.id,
+                             message_id=callback_query.message.message_id)
     await bot.send_photo(callback_query.message.chat.id, photo=HEROES.get(hidden_hero))
     await bot.send_poll(callback_query.message.chat.id, question="Что это за персонаж?", options=list_of_heroes,
                         is_anonymous=False, type="quiz", correct_option_id=list_of_heroes.index(hidden_hero),
                         explanation="Еще?", open_period=10)
+
+
+@dp.poll_answer_handler()
+async def some_poll_answer_handler(poll_answer: PollAnswer):
+    kb = keyboard_yn("start_quiz", "no")
+    await bot.send_message(poll_answer.user.id, text="Повторить?", reply_markup=kb)

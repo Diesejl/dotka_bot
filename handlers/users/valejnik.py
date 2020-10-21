@@ -17,6 +17,8 @@ async def text_handler(message: Message):
 async def process_callback_button1(callback_query: CallbackQuery):
     kb = keyboard_yn("yes", "no")
     await bot.answer_callback_query(callback_query.id)
+    await bot.delete_message(chat_id=callback_query.message.chat.id,
+                             message_id=callback_query.message.message_id)
     await bot.forward_message(callback_query.message.chat.id, from_chat_id="-1001215778140",
                               message_id=randint(1, 10000))
     await bot.send_message(callback_query.from_user.id, text=f"Эй, {callback_query.from_user.first_name} хочешь еще?",

@@ -20,3 +20,5 @@ redis = {
     'address': (ip, 6379),
     'encoding': 'utf8'
 }
+
+POLLS_STORAGE = {}

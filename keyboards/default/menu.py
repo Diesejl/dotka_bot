@@ -4,9 +4,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 menu = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="/start"),
-            KeyboardButton(text="/help"),
-            KeyboardButton(text="Dota 2 quiz"),
+            KeyboardButton(text="USA capitals quiz"),
+            KeyboardButton(text="Dota 2 heroes quiz"),
         ],
         [
             KeyboardButton(text="Прислать рандомный мемчик")

@@ -24,18 +24,15 @@ async def process_callback_button1(callback_query: CallbackQuery):
                              message_id=callback_query.message.message_id)
     await bot.send_photo(callback_query.message.chat.id, photo=HEROES.get(hidden_hero))
     poll = await bot.send_poll(callback_query.message.chat.id, question="Что это за персонаж?", options=list_of_heroes,
-                        is_anonymous=False, type="quiz", correct_option_id=list_of_heroes.index(hidden_hero),
-                        explanation="Еще?", open_period=10)
-    global POLLS_STORAGE
-    POLLS_STORAGE = {poll.poll.id: 'start_quiz'}
-
+                               type="quiz", correct_option_id=list_of_heroes.index(hidden_hero),
+                               is_anonymous=False, explanation="Еще?", open_period=10)
+    dp.polls_storage = {poll.poll.id: 'start_quiz'}
 
 
 @dp.poll_answer_handler()
 async def some_poll_answer_handler(poll_answer: PollAnswer):
-    global POLLS_STORAGE
-    kb = keyboard_yn(POLLS_STORAGE.get(poll_answer.poll_id), "no")
-    await bot.send_message(poll_answer.user.id, text="Повторить?", reply_markup=kb)
+    kb = keyboard_yn(dp.polls_storage.pop(poll_answer.poll_id), "no")
+    await bot.send_message(poll_answer.user.id, text="Повторить 🥃?", reply_markup=kb)
 
 
 @dp.message_handler(lambda message: message.text and 'usa capitals quiz' in message.text.lower())
@@ -54,8 +51,8 @@ async def process_callback_button2(callback_query: CallbackQuery):
     await bot.delete_message(chat_id=callback_query.message.chat.id,
                              message_id=callback_query.message.message_id)
     poll = await bot.send_poll(callback_query.message.chat.id, question=f"Выбери столицу штата {hidden_state}",
-                        options=list_of_capitals, is_anonymous=False, type="quiz",
-                        correct_option_id=list_of_capitals.index(CAPITALS.get(hidden_state)),
-                        explanation="Еще?", open_period=20)
-    global POLLS_STORAGE
-    POLLS_STORAGE = {poll.poll.id: 'start_quiz_states'}
+                               options=list_of_capitals, is_anonymous=False, type="quiz",
+                               correct_option_id=list_of_capitals.index(CAPITALS.get(hidden_state)), explanation="Еще?",
+                               open_period=20)
+    dp.polls_storage[poll.poll.id] = 'start_quiz_states'
+    print(dp.polls_storage)

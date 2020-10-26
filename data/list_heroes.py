@@ -1,6 +1,7 @@
 from random import choice
 from data.dotaheroes import HEROES
 from data.usa_state_capital import CAPITALS
+from data.usa_state_pictures import STATE_MAPS
 
 
 def make_list_of_heroes(hidden_hero):
@@ -12,6 +13,17 @@ def make_list_of_heroes(hidden_hero):
 
     list_of_heroes.sort()
     return list_of_heroes
+
+
+def make_list_of_maps(hidden_state):
+    list_of_maps = [hidden_state]
+    while len(list_of_maps) != 6:
+        new_map = choice(list(STATE_MAPS.keys()))
+        if new_map not in list_of_maps:
+            list_of_maps.append(new_map)
+
+    list_of_maps.sort()
+    return list_of_maps
 
 
 def make_list_of_capitals(hidden_state):

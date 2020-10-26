@@ -6,6 +6,7 @@ menu = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="USA capitals quiz"),
             KeyboardButton(text="Dota 2 heroes quiz"),
+            KeyboardButton(text="USA maps quiz"),
         ],
         [
             KeyboardButton(text="Прислать рандомный мемчик")

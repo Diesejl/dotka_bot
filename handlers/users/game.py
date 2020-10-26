@@ -2,7 +2,8 @@ from random import choice
 from aiogram.types import Message, PollAnswer, CallbackQuery
 from data.dotaheroes import HEROES
 from data.usa_state_capital import CAPITALS
-from data.list_heroes import make_list_of_heroes, make_list_of_capitals
+from data.list_heroes import make_list_of_heroes, make_list_of_capitals, make_list_of_maps
+from data.usa_state_pictures import STATE_MAPS
 from keyboards.inline import keyboard_yn
 from loader import dp, bot
 
@@ -56,3 +57,25 @@ async def process_callback_button2(callback_query: CallbackQuery):
                                open_period=20)
     dp.polls_storage[poll.poll.id] = 'start_quiz_states'
     print(dp.polls_storage)
+
+
+@dp.message_handler(lambda message: message.text and 'usa maps quiz' in message.text.lower())
+async def text_handler(message: Message):
+    kb = keyboard_yn("start_quiz_state_maps", "no")
+    await message.answer(f"Итак {message.from_user.first_name},"
+                         f" ты запускаешь интересную игру типа quiz по угадыванию штатов",
+                         reply_markup=kb)
+
+
+@dp.callback_query_handler(lambda c: c.data == 'start_quiz_state_maps')
+async def process_callback_button1(callback_query: CallbackQuery):
+    hidden_state = choice(list(STATE_MAPS.keys()))
+    list_of_states = make_list_of_maps(hidden_state)
+    await bot.answer_callback_query(callback_query.id)
+    await bot.delete_message(chat_id=callback_query.message.chat.id,
+                             message_id=callback_query.message.message_id)
+    await bot.send_photo(callback_query.message.chat.id, photo=STATE_MAPS.get(hidden_state))
+    poll = await bot.send_poll(callback_query.message.chat.id, question="Что это за штат?", options=list_of_states,
+                               type="quiz", correct_option_id=list_of_states.index(hidden_state),
+                               is_anonymous=False, explanation="Еще?", open_period=20)
+    dp.polls_storage = {poll.poll.id: 'start_quiz_state_maps'}

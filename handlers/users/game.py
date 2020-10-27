@@ -2,8 +2,8 @@ from random import choice
 from aiogram.types import Message, PollAnswer, CallbackQuery
 from data.dotaheroes import HEROES
 from data.usa_state_capital import CAPITALS
-from data.list_heroes import make_list_of_capitals, make_list_of_answers
 from data.usa_state_pictures import STATE_MAPS
+from data.list_of_answers import make_list_of_answers
 from keyboards.inline import keyboard_yn
 from loader import dp, bot
 
@@ -19,7 +19,7 @@ async def text_handler(message: Message):
 @dp.callback_query_handler(lambda c: c.data == 'start_quiz')
 async def process_callback_button1(callback_query: CallbackQuery):
     hidden_hero = choice(list(HEROES.keys()))
-    list_of_heroes = make_list_of_answers(HEROES, hidden_hero)
+    list_of_heroes = make_list_of_answers(HEROES, hidden_hero, picture_quiz=True)
     await bot.answer_callback_query(callback_query.id)
     await bot.delete_message(chat_id=callback_query.message.chat.id,
                              message_id=callback_query.message.message_id)
@@ -47,7 +47,7 @@ async def text_handler(message: Message):
 @dp.callback_query_handler(lambda c: c.data == 'start_quiz_states')
 async def process_callback_button2(callback_query: CallbackQuery):
     hidden_state = choice(list(CAPITALS.keys()))
-    list_of_capitals = make_list_of_capitals(hidden_state)
+    list_of_capitals = make_list_of_answers(CAPITALS, hidden_state)
     await bot.answer_callback_query(callback_query.id)
     await bot.delete_message(chat_id=callback_query.message.chat.id,
                              message_id=callback_query.message.message_id)
@@ -56,7 +56,6 @@ async def process_callback_button2(callback_query: CallbackQuery):
                                correct_option_id=list_of_capitals.index(CAPITALS.get(hidden_state)), explanation="Еще?",
                                open_period=20)
     dp.polls_storage[poll.poll.id] = 'start_quiz_states'
-    print(dp.polls_storage)
 
 
 @dp.message_handler(lambda message: message.text and 'usa maps quiz' in message.text.lower())
@@ -70,7 +69,7 @@ async def text_handler(message: Message):
 @dp.callback_query_handler(lambda c: c.data == 'start_quiz_state_maps')
 async def process_callback_button1(callback_query: CallbackQuery):
     hidden_state = choice(list(STATE_MAPS.keys()))
-    list_of_states = make_list_of_answers(STATE_MAPS, hidden_state)
+    list_of_states = make_list_of_answers(STATE_MAPS, hidden_state, picture_quiz=True)
     await bot.answer_callback_query(callback_query.id)
     await bot.delete_message(chat_id=callback_query.message.chat.id,
                              message_id=callback_query.message.message_id)

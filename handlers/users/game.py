@@ -11,8 +11,8 @@ from loader import dp, bot
 @dp.message_handler(lambda message: message.text and 'dota 2 heroes quiz' in message.text.lower())
 async def text_handler(message: Message):
     kb = keyboard_yn("start_quiz", "no")
-    await message.answer(f"Итак {message.from_user.first_name},"
-                         f" ты запускаешь простую игру типа quiz по персонажам из gota 2",
+    await message.answer(f"Итак '{message.from_user.first_name}', "
+                         f"ты запускаешь простую игру типа quiz по персонажам из Dota 2",
                          reply_markup=kb)
 
 

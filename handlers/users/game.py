@@ -1,6 +1,7 @@
 from random import choice
 from aiogram.types import Message, PollAnswer, CallbackQuery
 from data.dotaheroes import HEROES
+from data.text_locale_ru import QUESTION_AGAIN_LIST, QUESTION_HERO_LIST
 from data.usa_state_capital import CAPITALS
 from data.usa_state_pictures import STATE_MAPS
 from data.list_of_answers import make_list_of_answers
@@ -27,7 +28,7 @@ async def text_handler(message: Message):
 @dp.poll_answer_handler()
 async def some_poll_answer_handler(poll_answer: PollAnswer):
     kb = keyboard_yn(dp.polls_storage.pop(poll_answer.poll_id), "no")
-    await bot.send_message(poll_answer.user.id, text="Повторить 🥃?", reply_markup=kb)
+    await bot.send_message(poll_answer.user.id, text=choice(QUESTION_AGAIN_LIST), reply_markup=kb)
 
 
 @dp.callback_query_handler(lambda c: c.data == 'start_quiz')
@@ -38,8 +39,8 @@ async def process_callback_button1(callback_query: CallbackQuery):
     await bot.delete_message(chat_id=callback_query.message.chat.id,
                              message_id=callback_query.message.message_id)
     await bot.send_photo(callback_query.message.chat.id, photo=HEROES.get(hidden_hero))
-    poll = await bot.send_poll(callback_query.message.chat.id, question="Что это за персонаж?", options=list_of_heroes,
-                               type="quiz", correct_option_id=list_of_heroes.index(hidden_hero),
+    poll = await bot.send_poll(callback_query.message.chat.id, question=choice(QUESTION_HERO_LIST),
+                               options=list_of_heroes, type="quiz", correct_option_id=list_of_heroes.index(hidden_hero),
                                is_anonymous=False, explanation="Еще?", open_period=10)
     dp.polls_storage = {poll.poll.id: 'start_quiz'}
 

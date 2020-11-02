@@ -51,6 +51,7 @@ async def process_callback_button2(callback_query: CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     await bot.delete_message(chat_id=callback_query.message.chat.id,
                              message_id=callback_query.message.message_id)
+    await bot.send_photo(callback_query.message.chat.id, photo=STATE_MAPS.get(hidden_state))
     poll = await bot.send_poll(callback_query.message.chat.id, question=f"Выбери столицу штата {hidden_state}",
                                options=list_of_capitals, is_anonymous=False, type="quiz",
                                correct_option_id=list_of_capitals.index(CAPITALS.get(hidden_state)), explanation="Еще?",
